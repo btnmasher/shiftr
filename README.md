@@ -28,18 +28,18 @@ import (
 
 func main() {
 	cfg := server.NewConfig(
-    server.ListenAddr("localhost"),
-    server.ListenPort(8080),
-    server.WithJWTSecret("a strong secret here!"),
-		server.DatabaseDriver(server.Postgres),
-    server.DatabaseHost("localhost"),
-    server.DatabasePort(5432),
-    server.DatabaseUser("postgres_user"),
-    server.DatabasePass("postgres_password),
-    server.DatabaseName("shiftr"),
-    server.WithReadTimeout(time.Second * 5),
-    server.WithWriteTimeout(time.Second * 5),
-		server.DebugEnabled(true),
+                server.ListenAddr("localhost"),
+                server.ListenPort(8080),
+                server.WithJWTSecret("a strong secret here!"),
+                server.DatabaseDriver(server.Postgres),
+                server.DatabaseHost("localhost"),
+                server.DatabasePort(5432),
+                server.DatabaseUser("postgres_user"),
+                server.DatabasePass("postgres_password"),
+                server.DatabaseName("shiftr"),
+                server.WithReadTimeout(time.Second * 5),
+                server.WithWriteTimeout(time.Second * 5),
+                server.DebugEnabled(true),
 	)
 
 	srv := server.New()
