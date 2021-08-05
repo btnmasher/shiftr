@@ -16,7 +16,7 @@ If running on Windows, install [tdm-gcc](https://jmeubank.github.io/tdm-gcc/) or
 
 ##Customizaton
 
-You can customize/configure the application with the provided configuration functions passed to `server.NewCOnfig()`
+You can customize/configure the application with the provided configuration functions passed to `server.NewConfig()`
 
 ```Go
 package main
@@ -28,18 +28,18 @@ import (
 
 func main() {
 	cfg := server.NewConfig(
-    server.ListenAddr("localhost"),
-    server.ListenPort(8080),
-    server.WithJWTSecret("a strong secret here!"),
-		server.DatabaseDriver(server.Postgres),
-    server.DatabaseHost("localhost"),
-    server.DatabasePort(5432),
-    server.DatabaseUser("postgres_user"),
-    server.DatabasePass("postgres_password),
-    server.DatabaseName("shiftr"),
-    server.WithReadTimeout(time.Second * 5),
-    server.WithWriteTimeout(time.Second * 5),
-		server.DebugEnabled(true),
+                server.ListenAddr("localhost"),
+                server.ListenPort(8080),
+                server.WithJWTSecret("a strong secret here!"),
+                server.DatabaseDriver(server.Postgres),
+                server.DatabaseHost("localhost"),
+                server.DatabasePort(5432),
+                server.DatabaseUser("postgres_user"),
+                server.DatabasePass("postgres_password"),
+                server.DatabaseName("shiftr"),
+                server.WithReadTimeout(time.Second * 5),
+                server.WithWriteTimeout(time.Second * 5),
+                server.DebugEnabled(true),
 	)
 
 	srv := server.New()
