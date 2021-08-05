@@ -8,13 +8,13 @@ A coding challenge to demonstrate my knowledge with Go, REST, Patterns, and Data
 
 There is a postman collection file added for testing the endpoints.
 
-##Build Dependencies
+## Build Dependencies
 
 Requires GCC to build the sqlite dependency of GORM
 
 If running on Windows, install [tdm-gcc](https://jmeubank.github.io/tdm-gcc/) or equivalent so that there's a GCC binary in your %PATH%
 
-##Customizaton
+## Customizaton
 
 You can customize/configure the application with the provided configuration functions passed to `server.NewConfig()`
 
