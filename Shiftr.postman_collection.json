@@ -67,7 +67,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/login?user=testuser&pass=userpass",
+							"raw": "http://localhost:8080/login?user=testuser&pass=testpass",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -83,7 +83,7 @@
 								},
 								{
 									"key": "pass",
-									"value": "userpass"
+									"value": "testpass"
 								}
 							]
 						}
@@ -388,7 +388,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/shifts?user_id={{user_id}}",
+							"raw": "http://localhost:8080/api/v1/shifts?user_id={{user_id}}&filter_start=2021-08-01T00:00:00Z&limit=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -412,8 +412,7 @@
 								},
 								{
 									"key": "filter_start",
-									"value": "2021-08-01T00:00:00Z",
-									"disabled": true
+									"value": "2021-08-01T00:00:00Z"
 								},
 								{
 									"key": "filter_end",
@@ -422,8 +421,7 @@
 								},
 								{
 									"key": "limit",
-									"value": "10",
-									"disabled": true
+									"value": "10"
 								}
 							]
 						}
