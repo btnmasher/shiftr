@@ -52,7 +52,11 @@ func (s *Shift) BeforeCreate(_ *gorm.DB) error {
 func (s *Shift) BeforeSave(db *gorm.DB) error {
 
 	// Fetch all shifts that fall within the new shift's time span
-	shifts, err := ListShifts(db, s.UserID, -1, s.Start, s.End)
+	shifts, err := ListShifts(db,
+		FilterUserID(s.UserID),
+		FilterStart(s.Start),
+		FilterEnd(s.End),
+	)
 
 	if err != nil {
 		return err
@@ -126,32 +130,63 @@ func (s *Shift) Delete(db *gorm.DB) error {
 	return nil
 }
 
-// ListShifts attempts to return rows from the Shifts table with the specified limits and filters ordered by start time
-// If uid is not an empty string, results will be filtered to those rows belonging to any matching User.ID
+type ShiftFilterOption func(*gorm.DB)
+
+// FilterUserID is used with ListShifts to filter the query to return results matching the specific User.ID
+// If uid is not an empty string, results will be filtered by that User.ID
+func FilterUserID(uid string) func(*gorm.DB) {
+	return func(db *gorm.DB) {
+		if uid != "" {
+			db.Where("user_id = ?", uid)
+		}
+	}
+}
+
+// WithLimit is used with ListShifts to limit the number of results returned by the query.
 // If limit specified is less than or equal to 0, result will not be limited
-// The results can be filtered by the limitStart or limitEnd time, leave either fields nil for no filtering
-func ListShifts(db *gorm.DB, uid string, limit int, filterStart, filterEnd time.Time) ([]*Shift, error) {
+func WithLimit(limit int) func(*gorm.DB) {
+	return func(db *gorm.DB) {
+		if limit < 1 {
+			limit = -1
+		}
+		db.Limit(limit)
+	}
+}
+
+// FilterStart is used with ListShifts to filter Shift results that have start times that fall on or before the
+// specified filtered time.
+// If start is specified as a time.Time zero value, it is ignored.
+func FilterStart(start time.Time) func(*gorm.DB) {
+	return func(db *gorm.DB) {
+		if !start.IsZero() {
+			db.Where("start >= ?", start)
+		}
+	}
+}
+
+// FilterEnd is used with ListShifts to filter Shift results that have end times that fall on or after the
+// specified filtered time.
+// If end is specified as a time.Time zero value, it is ignored.
+func FilterEnd(end time.Time) func(*gorm.DB) {
+	return func(db *gorm.DB) {
+		if !end.IsZero() {
+			db.Where("end <= ?", end)
+		}
+	}
+}
+
+// ListShifts attempts to return rows from the Shifts table with the specified limits and filters ordered by start time
+// Provide ShiftFilterOption parameters to modify the query with additional filters.
+func ListShifts(db *gorm.DB, opts ...ShiftFilterOption) ([]*Shift, error) {
 	var shifts []*Shift
 
 	tx := db.Model(&Shift{}).Order("start")
 
-	if uid != "" {
-		tx.Where("user_id = ?", uid)
+	for _, opt := range opts {
+		opt(tx)
 	}
 
-	if !filterStart.IsZero() {
-		tx.Where("start >= ?", filterStart)
-	}
-
-	if !filterEnd.IsZero() {
-		tx.Where("end <= ?", filterEnd)
-	}
-
-	if limit < 1 {
-		limit = -1
-	}
-
-	tx.Limit(limit).Find(&shifts)
+	tx.Find(&shifts)
 
 	err := tx.Error
 	if err != nil {

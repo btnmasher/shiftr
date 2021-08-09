@@ -170,7 +170,13 @@ func ListShifts() func(echo.Context) error {
 		db := c.Get("db").(*gorm.DB)
 
 		// Attempt to write the changes to the database
-		shifts, err := models.ListShifts(db, params.UserID, params.Limit, params.Start, params.End)
+		shifts, err := models.ListShifts(db,
+			models.FilterUserID(params.UserID),
+			models.FilterStart(params.Start),
+			models.FilterEnd(params.End),
+			models.WithLimit(params.Limit),
+		)
+		//shifts, err := models.ListShifts(db, params.UserID, params.Limit, params.Start, params.End)
 		if err != nil {
 			return err
 		}
