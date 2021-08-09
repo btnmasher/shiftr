@@ -2,11 +2,13 @@
 
 A coding challenge to demonstrate my knowledge with Go, REST, Patterns, and Databases
 
-## Running:
+## Running
 
-`go get` and build! It defaults to using Sqlite memory database, some demo data has been added
+`go get` and build! It defaults to using Sqlite in-memory database, some demo data has been added in `main.go`
 
 There is a postman collection file added for testing the endpoints.
+
+First use the `Login as Admin` request in Postman, then `List Users`. That will set up the environment variables for the subsequent requests.
 
 ## Build Dependencies
 
