@@ -156,7 +156,7 @@ func FindUserByID(db *gorm.DB, uid string) (*User, error) {
 // FindUserByName attempts to return a row from the Users table with the matching User.Name
 func FindUserByName(db *gorm.DB, name string) (*User, error) {
 	user := &User{}
-	err := db.First(&user,"name = ?", name).Error
+	err := db.First(&user, "name = ?", name).Error
 	if err != nil {
 		return &User{}, err
 	}
